@@ -1,6 +1,23 @@
 const { request } = require("express");
 const User = require("../model/user");
 const crypto = require("crypto");
+const nodemailer= require("nodemailer");
+
+
+
+    const transport=nodemailer.createTransport({
+      service:"gmail",
+      auth: {
+        user: "feddynamiskweb@gmail.com",
+        pass: "FedDynamiskWeb.2021"
+
+      }
+
+
+
+
+    })
+
 
 const resetRender = (req, res) => {
   res.render("reset.ejs");
