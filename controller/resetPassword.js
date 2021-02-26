@@ -1,29 +1,26 @@
-const { request } = require("express");
+//const { request } = require("express");
 const User = require("../model/user");
 const crypto = require("crypto");
-const nodemailer= require("nodemailer");
+const nodemailer = require("nodemailer");
+const bcrypt=require("bcrypt")
 
 
-
-    const transport=nodemailer.createTransport({
-      service:"gmail",
-      auth: {
-        user: "feddynamiskweb@gmail.com",
-        pass: "FedDynamiskWeb.2021"
-
-      }
-
-
-
-
-    })
-
+const transport = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "feddynamiskweb@gmail.com",
+    pass: "FedDynamiskWeb.2021",
+  },
+});
 
 const resetRender = (req, res) => {
-  res.render("reset.ejs");
+
+  res.render("reset.ejs", {err:""}); 
+
 };
 
 const resetSubmit = async (req, res) => {
+  
   const email = req.body.email;
   //user exist?
 
@@ -40,9 +37,58 @@ const resetSubmit = async (req, res) => {
   user.tokenExpriration = Date.now() + 600000;
   await user.save();
   // send a link with tokken to email
-};
+
+  transport.sendMail({
+    from: "feddynamiskweb@gmail.com",
+    to: user.email,
+    subject: "Need a brand new password?",
+    html: `<h2> Click here <a href="http://localhost:8000/reset/${user.token}> for your new password </h2>`,
+  })
+
+  res.render("checkMail.ejs")
+
+}
+
+const resetParams= async(req,res)=>{
+
+  const token = req.params.token;
+
+
+  try{
+  const user=await User.findOne({token:token, tokenExpiration: { $gt: Date.now() } });
+
+  if(!user) return res.redirect("register");
+
+  res.render("resetPasswordForm.ejs", {err:""})
+  
+  }
+
+  catch (err){
+
+   res.render("reset.ejs", {err: "try again" })
+
+  }
+
+}
+
+
+const resetFormSubmit = async(req,res)=>{
+
+    const password= req.body.password
+
+    const salt=await bcrypt.genSalt(12); 
+    const hashedPassword= await bcrypt.hash(password, salt);
+
+    
+
+}
+
+
+
 
 module.exports = {
   resetRender,
   resetSubmit,
+  resetParams,
+  resetFormSubmit,
 };
