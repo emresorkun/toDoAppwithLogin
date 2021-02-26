@@ -59,7 +59,7 @@ const resetParams= async(req,res)=>{
 
   if(!user) return res.redirect("register");
 
-  res.render("resetPasswordForm.ejs", {err:""})
+  res.render("resetPasswordForm.ejs", {err:"", email: user.email})
   
   }
 
@@ -75,11 +75,17 @@ const resetParams= async(req,res)=>{
 const resetFormSubmit = async(req,res)=>{
 
     const password= req.body.password
+    const email= req.body.email;
 
     const salt=await bcrypt.genSalt(12); 
     const hashedPassword= await bcrypt.hash(password, salt);
 
-    
+    const user= await User.findOne({email:email});
+
+    user.password = hashedPassword;
+    await user.save();
+    res.redirect ("/login")
+
 
 }
 
