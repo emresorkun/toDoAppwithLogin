@@ -4,7 +4,9 @@ const cookieParser = require("cookie-parser");
 //const bodyParser= require("body-parser");
 
 const userRouter = require("./router/userRoute");
-const User = require("./model/user");
+//const User = require("./model/user");
+const homeRouter= require("./router/homeRoute");
+
 
 require("dotenv").config();
 
@@ -19,6 +21,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use(userRouter);
+app.use(homeRouter);
 
 const options = {
   useNewUrlParser: true,
