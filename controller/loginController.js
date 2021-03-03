@@ -21,7 +21,6 @@ if(!user) return res.redirect("/register")
 //compare the passwords 
 const validUser=await bcrypt.compare(password, user.password)
 
-console.log(validUser)
 
 if(!validUser) return res.redirect("/login"); 
 
@@ -30,7 +29,7 @@ const jwtToken= await jwt.sign( {user:user}, process.env.SECRET_KEY)
 if(jwtToken) { 
 
     const cookie= req.cookies.jwtToken
-
+ console.log("it works" , cookie)
 if(!cookie) {
     
     res.cookie("jwtToken", jwtToken, {maxAge:999999999999, httpOnly:true})
@@ -40,7 +39,7 @@ if(!cookie) {
 
 }
 
-return res.redirect("/login")
+return res.redirect("/")
 // return res.redirect("/login") BURADA UYENIN TODO LISTESINE MI GONDEREBILIR!!   
 // res.send("succesfully logged in")
 
