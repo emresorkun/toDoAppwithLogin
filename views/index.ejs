@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style/main.css">
+</head>
+<body>
+    <!-- BU ASLINDA index-->
+     <h1> SIMPLE TO DO APPLICATION </h1> 
+
+    
+
+     <%- include("add-data.ejs") %>
+
+ 
+     <% if(typeof error !== undefined && error !=="empty") { %>
+      <%- include("error.ejs") %>
+    <%  } %>
+
+    <a href="/?page=<%=(dataToShow/dataToShowPerReq)%>&&sorted=-1"> Sortera Z-A </a>
+    <a href="/?page=<%=(dataToShow/dataToShowPerReq)%>&&sorted=1"> Sortera A-Z  </a>
+
+<!-- 
+    <a href="/?page=-1">Sort ToDo (Z-A)</a>
+    <a href="/?page=1">Sort ToDo (A-Z)</a>  -->
+
+     <% for(let i=0; i<data.length; i++) { %>
+     <div>  <%= data[i].name %> .
+        
+        <a href="/edit/<%= data[i]._id %>" > edit  </a> 
+         
+        <a href="/delete/<%= data[i]._id %>"  > delete </a> 
+           
+     </div>
+       
+         
+    <% } %>
+  
+    <% if(totalDataPart !== dataToShow/dataToShowPerReq) { %>
+        <a href="/?page=<%=(dataToShow/dataToShowPerReq) +1%>"> 
+            Visa flera
+          </a>
+      <% } else {   %>
+        <a href="/?page=1"> 
+            visa mindre
+          </a>
+      <% } %>
+</body>
+</html>

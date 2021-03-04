@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 const userRouter = require("./router/userRoute");
 //const User = require("./model/user");
 const homeRouter= require("./router/homeRoute");
+const todoRouter = require("./router/todoRoute")
 
 
 require("dotenv").config();
@@ -22,6 +23,7 @@ app.use(cookieParser());
 
 app.use(userRouter);
 app.use(homeRouter);
+app.use(todoRouter)
 
 const options = {
   useNewUrlParser: true,
